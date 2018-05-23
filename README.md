@@ -20,10 +20,12 @@ R code to read in the above .csv files and output:
 ## Shiny app (server.R and ui.R)
 To run the shiny app displaying Figures 1A-1C, open R or RStudio and run:
 
+```
 install.packages("shiny")
 
 library(shiny)
 
 runGitHub("JVI_Gem_2018", "lauringlab")
+```
 
 Alternatively, download the files, open them in RStudio and click on "Run App".
