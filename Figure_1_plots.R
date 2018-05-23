@@ -2,7 +2,7 @@
 #
 # Code to generate Figure 1 (A-C) for Peck and Lauring 2018, JVI
 #
-# Developed by Kayla Peck - Last updated 18.05.11
+# Developed by Kayla Peck - Last updated 18.05.23
 #
 #----------------
 
