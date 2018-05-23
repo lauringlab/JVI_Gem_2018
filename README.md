@@ -16,3 +16,14 @@ R code to read in the above .csv files and output:
 * Figures 1A: viral evolutionary rates, K, vs. mutation rates, mu, for each Baltimore class (data from Figure_1_mu_and_K_data.csv)
 * Figure 1B: viral evolutionary rates, K, vs. mutation rates, mu, for individual viruses (ones that include an estimate for both K and mu) (data from Figure_1_mu_and_K_data.csv)
 * Figure 1C: mutation rate, mu, vs. genome size, G, for viruses (data from Figure_1_mu_and_K_data.csv) as well as eubacteria, unicellular, and multicellular taxa (data from Lynch_2016_mu_data.csv)
+
+## Shiny app (server.R and ui.R)
+To run the shiny app displaying Figures 1A-1C, open R or RStudio and run:
+
+install.packages("shiny")
+
+library(shiny)
+
+runGitHub("JVI_Gem_2018", "lauringlab")
+
+Alternatively, download the files, open them in RStudio and click on "Run App".
