@@ -1,4 +1,4 @@
-group,family,virus,G,K,mu,K reference (Sanjuan 2012),Full K reference ,mu reference (Domingo-Calap and Sanjuan 2016),Full mu reference
+group,family,virus,G,K,mu,K reference (Sanjuan 2012),Full K reference ,mu reference (Sanjuan and Domingo-Calap 2016),Full mu reference
 dsDNA,adeno,human_adenovirus_5,35.9,,1.31E-07,,,,Risso-Ballester et al. 2016
 dsDNA,adeno,human_adenovirus_B,35.34,7.20E-05,,82 (2012),Firth et al. 2010,,
 dsDNA,adeno,human_adenovirus_C,35.94,3.46E-05,,82 (2012),Firth et al. 2010,,
