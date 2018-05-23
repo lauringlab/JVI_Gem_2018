@@ -7,10 +7,10 @@
 #-----------------------
 
 library(shiny)
-dat <- read.csv("../Figure_1_mu_and_K_data.csv")
+dat <- read.csv("Figure_1_mu_and_K_data.csv")
 dat <- dat[,1:6]
 
-datL <- read.csv("../Lynch_2016_mu_data.csv")
+datL <- read.csv("Lynch_2016_mu_data.csv")
 names(datL)[1] <- "group"
 
 dat$U <- dat$G*1000*dat$mu 
