@@ -55,6 +55,9 @@ for(i in 1:length(datL$group)){
   }
 }
 
+muKdat <- data.frame(K=log10(K), mu=log10(mu), group=unique(dat$group))
+muKdat$colors <- cols
+
 shinyServer(function(input,output)
 {
   #renderPlot indicates that the function is "reactive" - it should automatically
@@ -64,10 +67,10 @@ shinyServer(function(input,output)
     #render the plot
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
       par(mar=c(5,6,1,1))
-      plot(log10(K)~log10(mu), ylim=c(-5,-2), xlim=c(-7.5,-3.8), pch=16, col=cols, cex=2,
+      plot(K~mu, dat=muKdat, ylim=c(-5,-2), xlim=c(-7.5,-3.8), pch=16, col=muKdat$colors, cex=2,
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n', cex.lab=2)
-      points(log10(K)~log10(mu), pch=1, cex=2)
+      points(K~mu, dat=muKdat, pch=1, cex=2)
       axis(1, cex.axis=1.25, at=c(-7,-6,-5,-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
       axis(2, cex.axis=1.25, las=2, at=c(-5,-4,-3,-2), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2}))))
       legend("topleft", ncol=2, c("dsDNA","dsRNA","retro","(-)ssRNA", "(+)ssRNA", "ssDNA"), 
@@ -100,28 +103,31 @@ shinyServer(function(input,output)
              pch=21, pt.bg=c(colsL,rep("white",3),cols), col=c(rep(1,3),rep("white",3),rep(1,6)),cex=1.5, bty='n')
     }
     
-    #plot(log10(K)~log10(mu), data=dat, xaxt='n', yaxt='n', col="grey40", 
-    #     pch=dat$pch, 
-    #     xlab="", ylab="", ylim=c(-5.5,-1.5), xlim=c(-7.5,-3.2), cex=1.5,
-    #     main=paste(input$plot))
-    #virus_of_choice <- subset(dat, dat$virus==input$virus) #names need to match exactly
-    #points(log10(K)~log10(mu), data=virus_of_choice, pch=virus_of_choice$pch, col=2, cex=1.5)
-    #mtext(expression(paste("Evolution rate, ", K, " (s/n/y)")),side=2,line=3.5, cex=1.5) 
-    #mtext(expression(paste("Mutation rate, ", mu, " (s/n/c)")),side=1,line=3, cex=1.5)
-    #axis(1, at=c(-7,-6,-5,-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))), cex.axis=1.5)
-    #axis(2, las=2, at=c(-5,-4,-3,-2), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2}))), cex.axis=1.5)
-    
-    #if(input$print == "Mutation rate"){
-    #  text(log10(mean(virus_of_choice$mu))+.4, log10(mean(virus_of_choice$K)), labels=mean(virus_of_choice$mu), col=2)
-      
-    #}
-    #if(input$print == "Evolution rate"){
-    #  text(log10(mean(virus_of_choice$mu))+.4, log10(mean(virus_of_choice$K)), labels=round(mean(virus_of_choice$K),4), col=2)
-      
-    #}
-    #if(input$print == "Virus class"){
-    #  text(log10(mean(virus_of_choice$mu))+.5, log10(mean(virus_of_choice$K)), labels=virus_of_choice$group[1], col=2)
-      
-    #}
+    output$info <- renderText({
+      #Function to obtain the closest coordinate point
+      hoverValue <- function(hover,x,y,other=NULL,tolerance=0.05){
+        if(!is.null(hover)){
+          x0 <- hover$x #x coordinate in user space
+          y0 <- hover$y #y coordinate in user space
+          xrange <- hover$domain$right - hover$domain$left
+          yrange <- hover$domain$top - hover$domain$bottom
+          #find the observation closest to the user coordinates
+          dist <- abs(x0-x)/xrange + abs(y0-y)/yrange
+          i <- which.min(dist)
+          #return corresponding index if close enough
+          if(dist[i] < tolerance){
+            #cat(captions[i])
+            convx <- formatC(10^as.numeric(x[i]),format="e", digits=2)
+            convy <- formatC(10^as.numeric(y[i]), format="e", digits=2)
+            paste0("Group = ", other[i], "\n",
+                "mu = ", convx, "\n",
+                "K = ", convy)
+            }
+          }
+      }
+
+      hoverValue(input$plot_hover, muKdat$mu, muKdat$K, muKdat$group)
+        
+    })
   })
 })

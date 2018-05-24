@@ -20,14 +20,6 @@ shinyUI(fluidPage(
       #selectInput("print", "Choose a value to print:",
       #            choices=c("None","Evolution rate", "Mutation rate", "Virus class")),
       br(),
-      #h5("Virus key"),
-      #p("TMV = tobacco mosaic virus"),
-      #p("polio1 = Poliovirus type 1"),
-      #p("HCV = hepatitis C virus"),
-      #p("fluva = Influenza A virus"),
-      #p("HIV = Human immunodeficiency virus"),
-      #p("HSV1 = herpes simplex virus 1"),
-      #p("AHBV = avian hepatitis B virus"),
       hr()
     ),
     #Spot for the plot
@@ -37,7 +29,9 @@ shinyUI(fluidPage(
         25 viruses are currently available. Here, we review the population genetics of virus mutation rates. We specifically 
         cover the topics of mutation rate estimation, the forces that drive the evolution of mutation rates, and how the optimal mutation rate can be context-dependent."),
       p("Choose a plot you would like to view using the right drop-down menu. Hover over points for more information.", style="color:blue"),
-      plotOutput("virusPlot")
+      plotOutput("virusPlot",
+                 hover = "plot_hover"),
+      verbatimTextOutput("info")
     )
   )))
 
