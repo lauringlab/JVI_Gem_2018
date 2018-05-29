@@ -67,10 +67,10 @@ fig2dat <- na.omit(dat)
 
 #Figure 3 data
 fig3dat <- data.frame(group=c(as.character(dat$group),as.character(datL$group)), 
-                           species=c(as.character(dat$virus),as.character(datL$species)), G=c(dat$G, datL$G),
+                           species=c(as.character(dat$virus),as.character(datL$species)), G=c(dat$G*1000, datL$G*1e6),
                            mu = c(dat$mu, datL$mu), U=c(dat$U,datL$U), 
                       colors=c(as.character(dat$colors),as.character(datL$colors)))
-fig3dat <- na.omit(combined_dat)
+fig3dat <- na.omit(fig3dat)
 
 #-----------------
 # Start shiny plot!
@@ -94,18 +94,18 @@ shinyServer(function(input,output,session)
   })
   current_x <- reactive({
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)" | input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
-      return(mu)
+      return("mu")
     }
     if(input$plot == "1C: Mutation rate vs. genome size"){
-      return(G)
+      return("G")
     }
   })
   current_y <- reactive({
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)" | input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
-      return(K)
+      return("K")
     }
     if(input$plot == "1C: Mutation rate vs. genome size"){
-      return(mu)
+      return("mu")
     }
   })
   
@@ -114,22 +114,22 @@ shinyServer(function(input,output,session)
     #render the plot
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
       par(mar=c(5,6,1,1))
-      plot(log10(K)~log10(mu), dat=fig1dat, ylim=c(-5,-2), xlim=c(-7.5,-3.8), pch=21, bg=fig1dat$colors, cex=2,
+      plot(K~mu, dat=fig1dat, ylim=c(1e-5,1e-2), xlim=c(1e-7,1e-4), log="xy", pch=21, bg=fig1dat$colors, cex=2,
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n', cex.lab=2)
-      axis(1, cex.axis=1.25, at=c(-7,-6,-5,-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
-      axis(2, cex.axis=1.25, las=2, at=c(-5,-4,-3,-2), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2}))))
+      axis(1, cex.axis=1.25, at=c(1e-7,1e-6,1e-5,1e-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
+      axis(2, cex.axis=1.25, las=2, at=c(1e-5,1e-4,1e-3,1e-2), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2}))))
       legend("topleft", ncol=2, c("dsDNA","dsRNA","retro","(-)ssRNA", "(+)ssRNA", "ssDNA"), 
              pch=21, pt.bg=cols, cex=1.5, bty='n')
     }
     if(input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
       par(mar=c(5,6,1,1))
-      plot(log10(K)~log10(mu), dat=fig2dat, ylim=c(-5,-1), xlim=c(-7.5,-3.5), pch=c(21,22,23,24,25,21,22,21,23,21),
+      plot(K~mu, dat=fig2dat, ylim=c(1e-5,1e-1), xlim=c(1e-7,1e-4), log="xy", pch=c(21,22,23,24,25,21,22,21,23,21),
            bg=c(rep("dodgerblue",5),rep("firebrick",2),rep("orangered",2),"gold"),
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n',cex=2,cex.lab=2)
-      axis(1, cex.axis=1.25, at=c(-7,-6,-5,-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
-      axis(2, cex.axis=1.25, las=2, at=c(-5,-4,-3,-2,-1), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2})), expression(paste(10^{-1}))))
+      axis(1, cex.axis=1.25, at=c(1e-7,1e-6,1e-5,1e-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
+      axis(2, cex.axis=1.25, las=2, at=c(1e-5,1e-4,1e-3,1e-2,1e-1), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2})), expression(paste(10^{-1}))))
       legend("topleft", ncol=2, c("Tobacco mosaic virus", "Human rhinovirus", "Poliovirus 1",
                                   "Human norovirus", "Hepatitis C virus", "Influenza A virus",
                                   "Measles virus", "Avian HBV", "HIV-1", "Herpes simplex virus"), 
@@ -138,20 +138,32 @@ shinyServer(function(input,output,session)
     }
     if(input$plot == "1C: Mutation rate vs. genome size"){
       par(mar=c(5,6,1,1))
-      plot(log10(mu)~log10(G*1000), dat=fig3dat, ylim=c(-11,-1), xlim=c(3,10),
+      plot(mu~G, dat=fig3dat, ylim=c(1e-11,1e-1), xlim=c(1e3,1e10), log="xy",
            ylab=expression(paste("Mutation rate (s/n/c or s/n/g)")), xlab=expression(paste("G (bp)")), 
-           xaxt='n', yaxt='n', bg=dat$colors, pch=21, cex=1.5, cex.lab=2)
-      axis(1, cex.axis=1.25, at=c(3,4,5,6,7,8,9,10), labels=c(expression(paste(10^{3})),expression(paste(10^{4})),expression(paste(10^{5})),expression(paste(10^{6})),expression(paste(10^{7})),expression(paste(10^{8})),expression(paste(10^{9})),expression(paste(10^{10}))))
-      axis(2, cex.axis=1.25, las=2, at=c(-11, -9,-7,-5,-3,-1), labels=c(expression(paste(10^{-11})), expression(paste(10^{-9})), expression(paste(10^{-7})), expression(paste(10^{-5})), expression(paste(10^{-3})), expression(paste(10^{-1}))))
+           xaxt='n', yaxt='n', bg=as.character(fig3dat$colors), pch=21, cex=1.5, cex.lab=2)
+      axis(1, cex.axis=1.25, at=c(1e3,1e4,1e5,1e6,1e7,1e8,1e9,1e10), labels=c(expression(paste(10^{3})),expression(paste(10^{4})),expression(paste(10^{5})),expression(paste(10^{6})),expression(paste(10^{7})),expression(paste(10^{8})),expression(paste(10^{9})),expression(paste(10^{10}))))
+      axis(2, cex.axis=1.25, las=2, at=c(1e-11, 1e-9,1e-7,1e-5,1e-3,1e-1), labels=c(expression(paste(10^{-11})), expression(paste(10^{-9})), expression(paste(10^{-7})), expression(paste(10^{-5})), expression(paste(10^{-3})), expression(paste(10^{-1}))))
       legend("topright", ncol=2, c("multicellular","unicellular", "eubacteria","", "", "", "dsDNA", "dsRNA", "retro", "(-)ssRNA", "(+)ssRNA", "ssDNA"), 
              pch=21, pt.bg=c(colsL,rep("white",3),cols), col=c(rep(1,3),rep("white",3),rep(1,6)),cex=1.5, bty='n')
     }
     
+    #Make the plot brushable
     output$brush_info <- renderDataTable({
       if(is.null(input$virusPlot_brush))
         return()
       brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
-    }, options=list(lengthMenu=c(100,1000,10000,100000), pageLength=1000))
+    })
+    
+    #Plot summary box for selected points
+    # output$brush_info2 <- renderPrint({
+    #   if(is.null(input$virusPlot_brush))
+    #     return()
+    #   
+    #   selected_points <- brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
+    #   
+    #   print(input$virusPlot_brush)
+    #   
+    # })
     
   })
 })
