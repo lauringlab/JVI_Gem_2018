@@ -29,7 +29,7 @@ shinyUI(fluidPage(
         25 viruses are currently available. Here, we review the population genetics of virus mutation rates. We specifically 
         cover the topics of mutation rate estimation, the forces that drive the evolution of mutation rates, and how the optimal mutation rate can be context-dependent."),
       br(),
-      h4("Choose a plot you would like to view using the right drop-down menu. Draw a box around points for more information.", style="color:blue"),
+      h4("Choose a plot you would like to view using the left drop-down menu. Draw a box around points to explore the raw data.", style="color:blue"),
       br(),
       plotOutput("virusPlot",
                  height = "500px",
