@@ -124,8 +124,8 @@ shinyServer(function(input,output,session)
     }
     if(input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
       par(mar=c(5,6,1,1))
-      plot(K~mu, dat=fig2dat, ylim=c(1e-5,1e-1), xlim=c(1e-7,1e-4), log="xy", pch=c(21,22,23,24,25,21,22,21,23,21),
-           bg=c(rep("dodgerblue",5),rep("firebrick",2),rep("orangered",2),"gold"),
+      plot(K~mu, dat=fig2dat, ylim=c(1e-5,1e-1), xlim=c(2e-8,2e-4), log="xy", pch=c(21,21,23,21,22,21,22,23,24,25),
+           bg=fig2dat$colors,
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n',cex=2,cex.lab=2)
       axis(1, cex.axis=1.25, at=c(1e-7,1e-6,1e-5,1e-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
