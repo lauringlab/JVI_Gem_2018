@@ -8,30 +8,49 @@
 
 library(shiny)
 shinyUI(fluidPage(
-  #Main title
-  titlePanel("The complexities of viral mutation rates."),
   #Sidebar
-  sidebarLayout(position="right",
+  sidebarLayout(position="left",
     sidebarPanel(
       selectInput("plot", "Choose figure to view:", 
                   choices=c("1A: Evolution vs. mutation rate (Baltimore classes)",
                             "1B: Evolution vs. mutation rate (individual viruses)",
-                            "1C: Mutation rate vs. genome size")),
+                            "1C: Mutation rate vs. genome size"))
       #selectInput("print", "Choose a value to print:",
       #            choices=c("None","Evolution rate", "Mutation rate", "Virus class")),
-      br(),
-      hr()
+      #br(),
+      #hr()
     ),
     #Spot for the plot
     mainPanel(
-      h5("Peck and Lauring 2018."),
-      p("Many viruses evolve rapidly. This is due, in part, to their high mutation rates. Mutation rate estimates for over 
+      h1("The complexities of viral mutation rates"),
+      h3("Peck and Lauring 2018"),
+      br(),
+      h4("Abstract: Many viruses evolve rapidly. This is due, in part, to their high mutation rates. Mutation rate estimates for over 
         25 viruses are currently available. Here, we review the population genetics of virus mutation rates. We specifically 
         cover the topics of mutation rate estimation, the forces that drive the evolution of mutation rates, and how the optimal mutation rate can be context-dependent."),
-      p("Choose a plot you would like to view using the right drop-down menu. Hover over points for more information.", style="color:blue"),
+      br(),
+      h4("Choose a plot you would like to view using the right drop-down menu. Draw a box around points for more information.", style="color:blue"),
+      br(),
       plotOutput("virusPlot",
-                 hover = "plot_hover"),
-      verbatimTextOutput("info")
+                 height = "500px",
+                 width = "600px",
+                 dblclick = "virusPlot_dblclick",
+                 brush = brushOpts(
+                   id = "virusPlot_brush"
+                 )),
+      uiOutput("legend.ui"),
+      fluidRow(
+        tags$head(tags$style(type="text/css",
+                             "#brush_info {font-size: 8px}")),
+        br(),
+        verbatimTextOutput("brush_info2"),
+        fluidRow(
+          tags$head(tags$style(type="text/css",
+                               "#brush_info {font-size: 12px}")),
+          dataTableOutput("brush_info"))
+        )
+      )
     )
-  )))
+  )
+)
 
