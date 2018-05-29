@@ -7,6 +7,8 @@
 #-----------------------
 
 library(shiny)
+
+#Read in the data and prepare the data frames needed for each plot
 dat <- read.csv("Figure_1_mu_and_K_data.csv")
 dat <- dat[,1:6]
 
@@ -55,22 +57,66 @@ for(i in 1:length(datL$group)){
   }
 }
 
-muKdat <- data.frame(K=log10(K), mu=log10(mu), group=unique(dat$group))
-muKdat$colors <- cols
+#create organized data frames for shiny data retrieval
+#Figure 1 data
+fig1dat <- data.frame(K=K, mu=mu, group=unique(dat$group))
+fig1dat$colors <- cols
 
-shinyServer(function(input,output)
+#Figure 2 data
+fig2dat <- na.omit(dat)
+
+#Figure 3 data
+fig3dat <- data.frame(group=c(as.character(dat$group),as.character(datL$group)), 
+                           species=c(as.character(dat$virus),as.character(datL$species)), G=c(dat$G, datL$G),
+                           mu = c(dat$mu, datL$mu), U=c(dat$U,datL$U), 
+                      colors=c(as.character(dat$colors),as.character(datL$colors)))
+fig3dat <- na.omit(combined_dat)
+
+#-----------------
+# Start shiny plot!
+#-----------------
+
+shinyServer(function(input,output,session)
 {
+  par(mar=c(5.1,4.1,0,0))
   #renderPlot indicates that the function is "reactive" - it should automatically
   #re-execute when the input changes
+  current_data <- reactive({
+    if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
+      return(fig1dat)
+    }
+    if(input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
+      return(fig2dat)
+    }
+    if(input$plot == "1C: Mutation rate vs. genome size"){
+      return(fig3dat)
+    }
+  })
+  current_x <- reactive({
+    if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)" | input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
+      return(mu)
+    }
+    if(input$plot == "1C: Mutation rate vs. genome size"){
+      return(G)
+    }
+  })
+  current_y <- reactive({
+    if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)" | input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
+      return(K)
+    }
+    if(input$plot == "1C: Mutation rate vs. genome size"){
+      return(mu)
+    }
+  })
+  
   output$virusPlot <- renderPlot({
     
     #render the plot
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
       par(mar=c(5,6,1,1))
-      plot(K~mu, dat=muKdat, ylim=c(-5,-2), xlim=c(-7.5,-3.8), pch=16, col=muKdat$colors, cex=2,
+      plot(log10(K)~log10(mu), dat=fig1dat, ylim=c(-5,-2), xlim=c(-7.5,-3.8), pch=21, bg=fig1dat$colors, cex=2,
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n', cex.lab=2)
-      points(K~mu, dat=muKdat, pch=1, cex=2)
       axis(1, cex.axis=1.25, at=c(-7,-6,-5,-4), labels=c(expression(paste(10^{-7})), expression(paste(10^{-6})), expression(paste(10^{-5})), expression(paste(10^{-4}))))
       axis(2, cex.axis=1.25, las=2, at=c(-5,-4,-3,-2), labels=c(expression(paste(10^{-5})), expression(paste(10^{-4})), expression(paste(10^{-3})), expression(paste(10^{-2}))))
       legend("topleft", ncol=2, c("dsDNA","dsRNA","retro","(-)ssRNA", "(+)ssRNA", "ssDNA"), 
@@ -78,8 +124,7 @@ shinyServer(function(input,output)
     }
     if(input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
       par(mar=c(5,6,1,1))
-      dat.sub <- na.omit(dat)
-      plot(log10(K)~log10(mu), dat=dat.sub, ylim=c(-5,-1), xlim=c(-7.5,-3.5), pch=c(21,22,23,24,25,21,22,21,23,21),
+      plot(log10(K)~log10(mu), dat=fig2dat, ylim=c(-5,-1), xlim=c(-7.5,-3.5), pch=c(21,22,23,24,25,21,22,21,23,21),
            bg=c(rep("dodgerblue",5),rep("firebrick",2),rep("orangered",2),"gold"),
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n',cex=2,cex.lab=2)
@@ -93,41 +138,48 @@ shinyServer(function(input,output)
     }
     if(input$plot == "1C: Mutation rate vs. genome size"){
       par(mar=c(5,6,1,1))
-      plot(log10(mu)~log10(G*1000), dat=dat, ylim=c(-11,-1), xlim=c(3,10),
+      plot(log10(mu)~log10(G*1000), dat=fig3dat, ylim=c(-11,-1), xlim=c(3,10),
            ylab=expression(paste("Mutation rate (s/n/c or s/n/g)")), xlab=expression(paste("G (bp)")), 
            xaxt='n', yaxt='n', bg=dat$colors, pch=21, cex=1.5, cex.lab=2)
-      points(log10(mu)~log10(G*1e6),dat=datL, bg=datL$colors, pch=21, cex=1.5)
       axis(1, cex.axis=1.25, at=c(3,4,5,6,7,8,9,10), labels=c(expression(paste(10^{3})),expression(paste(10^{4})),expression(paste(10^{5})),expression(paste(10^{6})),expression(paste(10^{7})),expression(paste(10^{8})),expression(paste(10^{9})),expression(paste(10^{10}))))
       axis(2, cex.axis=1.25, las=2, at=c(-11, -9,-7,-5,-3,-1), labels=c(expression(paste(10^{-11})), expression(paste(10^{-9})), expression(paste(10^{-7})), expression(paste(10^{-5})), expression(paste(10^{-3})), expression(paste(10^{-1}))))
       legend("topright", ncol=2, c("multicellular","unicellular", "eubacteria","", "", "", "dsDNA", "dsRNA", "retro", "(-)ssRNA", "(+)ssRNA", "ssDNA"), 
              pch=21, pt.bg=c(colsL,rep("white",3),cols), col=c(rep(1,3),rep("white",3),rep(1,6)),cex=1.5, bty='n')
     }
     
-    output$info <- renderText({
-      #Function to obtain the closest coordinate point
-      hoverValue <- function(hover,x,y,other=NULL,tolerance=0.05){
-        if(!is.null(hover)){
-          x0 <- hover$x #x coordinate in user space
-          y0 <- hover$y #y coordinate in user space
-          xrange <- hover$domain$right - hover$domain$left
-          yrange <- hover$domain$top - hover$domain$bottom
-          #find the observation closest to the user coordinates
-          dist <- abs(x0-x)/xrange + abs(y0-y)/yrange
-          i <- which.min(dist)
-          #return corresponding index if close enough
-          if(dist[i] < tolerance){
-            #cat(captions[i])
-            convx <- formatC(10^as.numeric(x[i]),format="e", digits=2)
-            convy <- formatC(10^as.numeric(y[i]), format="e", digits=2)
-            paste0("Group = ", other[i], "\n",
-                "mu = ", convx, "\n",
-                "K = ", convy)
-            }
-          }
-      }
-
-      hoverValue(input$plot_hover, muKdat$mu, muKdat$K, muKdat$group)
-        
-    })
+    output$brush_info <- renderDataTable({
+      if(is.null(input$virusPlot_brush))
+        return()
+      brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
+    }, options=list(lengthMenu=c(100,1000,10000,100000), pageLength=1000))
+    
   })
 })
+
+#--------------------------------
+# Old code for showing data when the mouse hovers over a data point
+#--------------------------------
+# output$info <- renderText({
+#   #Function to obtain the closest coordinate point
+#   hoverValue <- function(hover,x,y,other=NULL,tolerance=0.05){
+#     if(!is.null(hover)){
+#       x0 <- hover$x #x coordinate in user space
+#       y0 <- hover$y #y coordinate in user space
+#       xrange <- hover$domain$right - hover$domain$left
+#       yrange <- hover$domain$top - hover$domain$bottom
+#       #find the observation closest to the user coordinates
+#       dist <- abs(x0-x)/xrange + abs(y0-y)/yrange
+#       i <- which.min(dist)
+#       #return corresponding index if close enough
+#       if(dist[i] < tolerance){
+#         #cat(captions[i])
+#         convx <- formatC(10^as.numeric(x[i]),format="e", digits=2)
+#         convy <- formatC(10^as.numeric(y[i]), format="e", digits=2)
+#         paste0("Group = ", other[i], "\n",
+#                "mu = ", convx, "\n",
+#                "K = ", convy)
+#       }
+#     }
+#   }
+#   
+#   hoverValue(input$plot_hover, muKdat$mu, muKdat$K, muKdat$group)
