@@ -155,7 +155,7 @@ shinyServer(function(input,output,session)
         return()
       if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
         selected_points <- brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
-        temp <- dat[dat$group==selected_points$group,]
+        temp <- dat[dat$group %in% selected_points$group,]
         temp
       }
       else{
