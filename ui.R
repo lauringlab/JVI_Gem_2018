@@ -39,11 +39,11 @@ shinyUI(fluidPage(
                    id = "virusPlot_brush"
                  )),
       uiOutput("legend.ui"),
-      # fluidRow(
-      #   tags$head(tags$style(type="text/css",
-      #                        "#brush_info {font-size: 8px}")),
-      #   br(),
-      #   verbatimTextOutput("brush_info2"),
+       fluidRow(
+         tags$head(tags$style(type="text/css",
+                              "#brush_info {font-size: 8px}")),
+         br(),
+         verbatimTextOutput("brush_info2"),
         fluidRow(
           tags$head(tags$style(type="text/css",
                                "#brush_info {font-size: 12px}")),
@@ -52,5 +52,5 @@ shinyUI(fluidPage(
       )
     )
   )
-#)
+)
 

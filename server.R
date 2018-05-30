@@ -153,19 +153,24 @@ shinyServer(function(input,output,session)
     output$brush_info <- renderDataTable({
       if(is.null(input$virusPlot_brush))
         return()
-      brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
+      if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
+        selected_points <- brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
+        temp <- dat[dat$group==selected_points$group,]
+        temp
+      }
+      else{
+        brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
+      }
     })
     
     #Plot summary box for selected points
-    # output$brush_info2 <- renderPrint({
-    #   if(is.null(input$virusPlot_brush))
-    #     return()
-    #   
-    #   selected_points <- brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
-    #   
-    #   print(input$virusPlot_brush)
-    #   
-    # })
+     output$brush_info2 <- renderPrint({
+       if(is.null(input$virusPlot_brush))
+         return()
+       if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
+         brushedPoints(current_data(), input$virusPlot_brush, current_x(), current_y())
+       }
+     })
     
   })
 })
