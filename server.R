@@ -10,10 +10,11 @@ library(shiny)
 
 #Read in the data and prepare the data frames needed for each plot
 dat <- read.csv("Figure_1_mu_and_K_data.csv")
-dat <- dat[,1:6]
+dat <- dat[,c(1:6,8,10)]
 
 datL <- read.csv("Lynch_2016_mu_data.csv")
 names(datL)[1] <- "group"
+datL$Reference <- "Lynch et al. 2016"
 
 dat$U <- dat$G*1000*dat$mu 
 datL$U <- datL$G*1000000*datL$mu 
@@ -69,6 +70,7 @@ fig2dat <- na.omit(dat)
 fig3dat <- data.frame(group=c(as.character(dat$group),as.character(datL$group)), 
                            species=c(as.character(dat$virus),as.character(datL$species)), G=c(dat$G*1000, datL$G*1e6),
                            mu = c(dat$mu, datL$mu), U=c(dat$U,datL$U), 
+                      Reference=c(as.character(dat$Full.mu.reference),as.character(datL$Reference)),
                       colors=c(as.character(dat$colors),as.character(datL$colors)))
 fig3dat <- na.omit(fig3dat)
 
