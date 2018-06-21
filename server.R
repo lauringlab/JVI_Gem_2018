@@ -2,7 +2,7 @@
 # 
 # Shiny app for visualizing the data in Figures 1A-1C of [Peck and Lauring 2018](http://jvi.asm.org/content/early/2018/04/26/JVI.01031-17.short)
 #
-# Developed by Kayla Peck, 18.05.23
+# Developed by Kayla Peck, 18.05.23. Last updated 18.06.21
 #
 #-----------------------
 
@@ -10,7 +10,6 @@ library(shiny)
 
 #Read in the data and prepare the data frames needed for each plot
 dat <- read.csv("Figure_1_mu_and_K_data.csv")
-#dat <- dat[,c(1:6,8,10)]
 
 datL <- read.csv("Lynch_2016_mu_data.csv")
 names(datL)[1] <- "group"
@@ -19,17 +18,8 @@ datL$Reference <- "Lynch et al. 2016"
 dat$U <- dat$G*1000*dat$mu 
 datL$U <- datL$G*1000000*datL$mu 
 
-# K <- mu <- G <- 0
-# for(i in 1:length(unique(dat$group))){
-#   sub <- subset(dat, group==unique(dat$group)[i])
-#   K[i] <- 10^mean(log10(sub$K), na.rm=T)
-#   mu[i] <- 10^mean(log10(sub$mu), na.rm=T)
-#   G[i] <- 10^mean(log10(sub$G), na.rm=T)
-# }
-
-#Set up color palettes
+#Set up color palette for viruses
 cols <- c("gold","forestgreen","orangered","firebrick","dodgerblue", "darkorchid")
-colsL <- c("black", "white","grey70")
 dat$colors <- "dodgerblue"
 for(i in 1:length(dat$group)){
   if(dat$group[i]=="ss_neg_RNA"){
@@ -48,6 +38,9 @@ for(i in 1:length(dat$group)){
     dat$colors[i] <- "gold"
   }
 }
+
+#Set up color palette for non-viruses
+colsL <- c("black", "white","grey70")
 datL$colors <- "black"
 for(i in 1:length(datL$group)){
   if(datL$group[i]=="eubacteria"){
@@ -58,22 +51,13 @@ for(i in 1:length(datL$group)){
   }
 }
 
-#create organized data frames for shiny data retrieval
-#Figure 1 data
-#fig1dat <- data.frame(K=K, mu=mu, group=unique(dat$group))
-#fig1dat$colors <- cols
-
-#Figure 2 data
-#fig2dat <- na.omit(dat)
-
-#Figure 3 data
+#Combine virus and non-virus data into a data frame (for Figure 1C)
 fig3dat.full <- data.frame(group=c(as.character(dat$group),as.character(datL$group)), 
                            species=c(as.character(dat$virus),as.character(datL$species)), G=c(dat$G*1000, datL$G*1e6),
                            mu = c(dat$mu, datL$mu), U=c(dat$U,datL$U), 
                       Reference=c(as.character(dat$Full.mu.reference),as.character(datL$Reference)),
                       colors=c(as.character(dat$colors),as.character(datL$colors)),
                       included=c(dat$Included.in.2018.publication, datL$included))
-#fig3dat <- na.omit(fig3dat)
 
 #-----------------
 # Start shiny plot!
@@ -81,13 +65,16 @@ fig3dat.full <- data.frame(group=c(as.character(dat$group),as.character(datL$gro
 
 shinyServer(function(input,output,session)
 {
+  #Set up plot margins
   par(mar=c(5.1,4.1,0,0))
-  #renderPlot indicates that the function is "reactive" - it should automatically
-  #re-execute when the input changes
+
+  #Collect and return the current data set based on the user's input choices
+  #This will be the data for each figure (1A, 1B, 1C) (input$plot) and whether to include
+  #only the publication data or data added post-2018-publication (input$all)
   current_data <- reactive({
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
       if(input$all==TRUE){
-        K <- mu <- G <- 0
+        K <- mu <- G <- 0 #calculate means including all available data points
         for(i in 1:length(unique(dat$group))){
           sub <- subset(dat, group==unique(dat$group)[i])
           K[i] <- 10^mean(log10(sub$K), na.rm=T)
@@ -99,7 +86,7 @@ shinyServer(function(input,output,session)
         fig1dat$colors <- cols
       }
       else{
-        K <- mu <- G <- 0
+        K <- mu <- G <- 0 #calculate means using only data included in the 2018 publication
         for(i in 1:length(unique(dat$group))){
           sub <- subset(dat, group==unique(dat$group)[i] & dat$Included.in.2018.publication == T)
           K[i] <- 10^mean(log10(sub$K), na.rm=T)
@@ -131,6 +118,7 @@ shinyServer(function(input,output,session)
       return(fig3dat)
     }
   })
+  #Returns the x-axis variable given the current plot
   current_x <- reactive({
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)" | input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
       return("mu")
@@ -139,6 +127,7 @@ shinyServer(function(input,output,session)
       return("G")
     }
   })
+  #Returns the y-axis variable given the current plot
   current_y <- reactive({
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)" | input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
       return("K")
@@ -148,9 +137,12 @@ shinyServer(function(input,output,session)
     }
   })
   
+  #Start rendering the plot
+  # renderPlot indicates that the function is "reactive" - it should automatically
+  # re-execute when the input changes
   output$virusPlot <- renderPlot({
     
-    #render the plot
+    #Render the plot
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
       par(mar=c(5,6,1,1))
       fig1dat <- current_data()
@@ -189,7 +181,7 @@ shinyServer(function(input,output,session)
              pch=21, pt.bg=c(colsL,rep("white",3),cols), col=c(rep(1,3),rep("white",3),rep(1,6)),cex=1.5, bty='n')
     }
     
-    #Make the plot brushable
+    #Make the plot brushable (allows the user to draw a box on the plot to highlight desired points)
     output$brush_info <- renderDataTable({
       if(is.null(input$virusPlot_brush))
         return()
@@ -203,7 +195,7 @@ shinyServer(function(input,output,session)
       }
     })
     
-    #Plot summary box for selected points
+    #Display summary box for selected points
      output$brush_info2 <- renderPrint({
        if(is.null(input$virusPlot_brush))
          return()
