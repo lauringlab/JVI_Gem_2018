@@ -106,3 +106,4 @@ ssDNA,parvo,IHHNV,3.91,1.39E-04,,80 (2012),Robles-Sikisaka et al. 2010,,,T
 ssDNA,parvo,porcine_parvovirus,5.08,1.88E-04,,81 (2012),Streck et al. 2011,,,T
 ss_pos_RNA,picorna,coxsackie_B_virus,7.4,4.76E-03,,,Huang et al. 2018,,,F
 ss_pos_RNA,picorna,swine_vesicular_disease_virus,7.4,3.61E-03,,,Huang et al. 2018,,,F
+ss_pos_RNA,flavi,zika_virus,10,6.76E-04,,,"Pettersson et al. 2016, Pettersson et al. 2018",,,F
