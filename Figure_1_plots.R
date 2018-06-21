@@ -16,7 +16,7 @@
 # Compiled references: Figure_1_mu_and_K_references.docx
 
 dat <- read.csv("Figure_1_mu_and_K_data.csv")
-dat <- dat[,1:6] #remove unneccessary columns with reference info
+#dat <- dat[,1:6] #remove unneccessary columns with reference info
 
 #Read in data from Lynch et al. 2016 (for Figure 1C)
 datL <- read.csv("Lynch_2016_mu_data.csv")
@@ -30,7 +30,7 @@ datL$U <- datL$G*1000000*datL$mu
 #Note that geometric means are used for both metrics
 K <- mu <- G <- 0
 for(i in 1:length(unique(dat$group))){
-  sub <- subset(dat, group==unique(dat$group)[i])
+  sub <- subset(dat, group==unique(dat$group)[i] & Included.in.2018.publication == T)
   K[i] <- 10^mean(log10(sub$K), na.rm=T)
   mu[i] <- 10^mean(log10(sub$mu), na.rm=T)
   G[i] <- 10^mean(log10(sub$G), na.rm=T)
