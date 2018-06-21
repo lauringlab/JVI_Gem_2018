@@ -14,11 +14,12 @@ shinyUI(fluidPage(
       selectInput("plot", "Choose figure to view:", 
                   choices=c("1A: Evolution vs. mutation rate (Baltimore classes)",
                             "1B: Evolution vs. mutation rate (individual viruses)",
-                            "1C: Mutation rate vs. genome size"))
+                            "1C: Mutation rate vs. genome size")),
       #selectInput("print", "Choose a value to print:",
       #            choices=c("None","Evolution rate", "Mutation rate", "Virus class")),
       #br(),
       #hr()
+      checkboxInput("all", "Include data collected after 2018 publication")
     ),
     #Spot for the plot
     mainPanel(
