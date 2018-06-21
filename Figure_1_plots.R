@@ -83,7 +83,7 @@ dev.off()
 #Figure 1B: Plot K vs. mu for individual viruses
 pdf(file="K_vs_mu_individual.pdf")
 par(mar=c(5,6,1,1))
-dat.sub <- na.omit(dat)
+dat.sub <- na.omit(dat[dat$Included.in.2018.publication==T,])
 plot(log10(K)~log10(mu), dat=dat.sub, ylim=c(-5,-1), xlim=c(-7.5,-3.5), pch=c(21,22,23,24,25,21,22,21,23,21),
      bg=c(rep("dodgerblue",5),rep("firebrick",2),rep("orangered",2),"gold"),
      ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
@@ -100,10 +100,10 @@ dev.off()
 #Figure 1C: Plot of mu vs. G (viral and nonviral data)
 pdf(file="mu_vs_G_all.pdf")
 par(mar=c(5,6,1,1))
-plot(log10(mu)~log10(G*1000), dat=dat, ylim=c(-11,-1), xlim=c(3,10),
+plot(log10(mu)~log10(G*1000), dat=dat[dat$Included.in.2018.publication==T,], ylim=c(-11,-1), xlim=c(3,10),
      ylab=expression(paste("Mutation rate (s/n/c or s/n/g)")), xlab=expression(paste("G (bp)")), 
      xaxt='n', yaxt='n', bg=dat$colors, pch=21, cex=1.5, cex.lab=2)
-points(log10(mu)~log10(G*1e6),dat=datL, bg=datL$colors, pch=21, cex=1.5)
+points(log10(mu)~log10(G*1e6),dat=datL[datL$included==T,], bg=datL$colors, pch=21, cex=1.5)
 axis(1, cex.axis=1.25, at=c(3,4,5,6,7,8,9,10), labels=c(expression(paste(10^{3})),expression(paste(10^{4})),expression(paste(10^{5})),expression(paste(10^{6})),expression(paste(10^{7})),expression(paste(10^{8})),expression(paste(10^{9})),expression(paste(10^{10}))))
 axis(2, cex.axis=1.25, las=2, at=c(-11, -9,-7,-5,-3,-1), labels=c(expression(paste(10^{-11})), expression(paste(10^{-9})), expression(paste(10^{-7})), expression(paste(10^{-5})), expression(paste(10^{-3})), expression(paste(10^{-1}))))
 legend("topright", ncol=2, c("multicellular","unicellular", "eubacteria","", "", "", "dsDNA", "dsRNA", "retro", "(-)ssRNA", "(+)ssRNA", "ssDNA"), 
