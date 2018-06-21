@@ -10,7 +10,7 @@ library(shiny)
 
 #Read in the data and prepare the data frames needed for each plot
 dat <- read.csv("Figure_1_mu_and_K_data.csv")
-dat <- dat[,c(1:6,8,10)]
+#dat <- dat[,c(1:6,8,10)]
 
 datL <- read.csv("Lynch_2016_mu_data.csv")
 names(datL)[1] <- "group"
@@ -19,13 +19,13 @@ datL$Reference <- "Lynch et al. 2016"
 dat$U <- dat$G*1000*dat$mu 
 datL$U <- datL$G*1000000*datL$mu 
 
-K <- mu <- G <- 0
-for(i in 1:length(unique(dat$group))){
-  sub <- subset(dat, group==unique(dat$group)[i])
-  K[i] <- 10^mean(log10(sub$K), na.rm=T)
-  mu[i] <- 10^mean(log10(sub$mu), na.rm=T)
-  G[i] <- 10^mean(log10(sub$G), na.rm=T)
-}
+# K <- mu <- G <- 0
+# for(i in 1:length(unique(dat$group))){
+#   sub <- subset(dat, group==unique(dat$group)[i])
+#   K[i] <- 10^mean(log10(sub$K), na.rm=T)
+#   mu[i] <- 10^mean(log10(sub$mu), na.rm=T)
+#   G[i] <- 10^mean(log10(sub$G), na.rm=T)
+# }
 
 #Set up color palettes
 cols <- c("gold","forestgreen","orangered","firebrick","dodgerblue", "darkorchid")
@@ -60,19 +60,20 @@ for(i in 1:length(datL$group)){
 
 #create organized data frames for shiny data retrieval
 #Figure 1 data
-fig1dat <- data.frame(K=K, mu=mu, group=unique(dat$group))
-fig1dat$colors <- cols
+#fig1dat <- data.frame(K=K, mu=mu, group=unique(dat$group))
+#fig1dat$colors <- cols
 
 #Figure 2 data
-fig2dat <- na.omit(dat)
+#fig2dat <- na.omit(dat)
 
 #Figure 3 data
-fig3dat <- data.frame(group=c(as.character(dat$group),as.character(datL$group)), 
+fig3dat.full <- data.frame(group=c(as.character(dat$group),as.character(datL$group)), 
                            species=c(as.character(dat$virus),as.character(datL$species)), G=c(dat$G*1000, datL$G*1e6),
                            mu = c(dat$mu, datL$mu), U=c(dat$U,datL$U), 
                       Reference=c(as.character(dat$Full.mu.reference),as.character(datL$Reference)),
-                      colors=c(as.character(dat$colors),as.character(datL$colors)))
-fig3dat <- na.omit(fig3dat)
+                      colors=c(as.character(dat$colors),as.character(datL$colors)),
+                      included=c(dat$Included.in.2018.publication, datL$included))
+#fig3dat <- na.omit(fig3dat)
 
 #-----------------
 # Start shiny plot!
@@ -85,12 +86,48 @@ shinyServer(function(input,output,session)
   #re-execute when the input changes
   current_data <- reactive({
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
+      if(input$all==TRUE){
+        K <- mu <- G <- 0
+        for(i in 1:length(unique(dat$group))){
+          sub <- subset(dat, group==unique(dat$group)[i])
+          K[i] <- 10^mean(log10(sub$K), na.rm=T)
+          mu[i] <- 10^mean(log10(sub$mu), na.rm=T)
+          G[i] <- 10^mean(log10(sub$G), na.rm=T)
+        }
+        
+        fig1dat <- data.frame(K=K, mu=mu, group=unique(dat$group))
+        fig1dat$colors <- cols
+      }
+      else{
+        K <- mu <- G <- 0
+        for(i in 1:length(unique(dat$group))){
+          sub <- subset(dat, group==unique(dat$group)[i] & dat$Included.in.2018.publication == T)
+          K[i] <- 10^mean(log10(sub$K), na.rm=T)
+          mu[i] <- 10^mean(log10(sub$mu), na.rm=T)
+          G[i] <- 10^mean(log10(sub$G), na.rm=T)
+        }
+        
+        fig1dat <- data.frame(K=K, mu=mu, group=unique(dat$group))
+        fig1dat$colors <- cols
+      }
       return(fig1dat)
     }
     if(input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
+      if(input$all==TRUE){
+        fig2dat <- na.omit(dat)
+      }
+      else{
+        fig2dat <- na.omit(dat[dat$Included.in.2018.publication == T,])
+      }
       return(fig2dat)
     }
     if(input$plot == "1C: Mutation rate vs. genome size"){
+      if(input$all==TRUE){
+        fig3dat <- na.omit(fig3dat.full)
+      }
+      else{
+        fig3dat <- na.omit(fig3dat.full[fig3dat.full$included ==T,])
+      }
       return(fig3dat)
     }
   })
@@ -116,6 +153,7 @@ shinyServer(function(input,output,session)
     #render the plot
     if(input$plot == "1A: Evolution vs. mutation rate (Baltimore classes)"){
       par(mar=c(5,6,1,1))
+      fig1dat <- current_data()
       plot(K~mu, dat=fig1dat, ylim=c(1e-5,1e-2), xlim=c(1e-7,1e-4), log="xy", pch=21, bg=fig1dat$colors, cex=2,
            ylab=expression(paste("Evolutionary rate (s/n/y)")), xlab=expression(paste("Mutation rate (s/n/c)")), 
            xaxt='n', yaxt='n', cex.lab=2)
@@ -125,6 +163,7 @@ shinyServer(function(input,output,session)
              pch=21, pt.bg=cols, cex=1.5, bty='n')
     }
     if(input$plot == "1B: Evolution vs. mutation rate (individual viruses)"){
+      fig2dat <- current_data()
       par(mar=c(5,6,1,1))
       plot(K~mu, dat=fig2dat, ylim=c(1e-5,1e-1), xlim=c(2e-8,2e-4), log="xy", pch=c(21,21,23,21,22,21,22,23,24,25),
            bg=fig2dat$colors,
@@ -139,6 +178,7 @@ shinyServer(function(input,output,session)
              cex=1.2, bty='n')
     }
     if(input$plot == "1C: Mutation rate vs. genome size"){
+      fig3dat <- current_data()
       par(mar=c(5,6,1,1))
       plot(mu~G, dat=fig3dat, ylim=c(1e-11,1e-1), xlim=c(1e3,1e10), log="xy",
            ylab=expression(paste("Mutation rate (s/n/c or s/n/g)")), xlab=expression(paste("G (bp)")), 
