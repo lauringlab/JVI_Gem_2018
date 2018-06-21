@@ -1,36 +1,36 @@
-﻿group,species,mu,G,G_coding
-multicellular,Apis mellifera,0.0000000068000,262.000,28.968
-multicellular,Arabidopsis thaliana,0.0000000069500,119.700,42.070
-multicellular,Caenorhabditis briggsae,0.0000000013277,104.000,24.100
-multicellular,Caenorhabditis elegans,0.0000000014500,100.300,25.000
-multicellular,Daphnia pulex,0.0000000056900,250.000,30.167
-multicellular,Drosophila melanogaster,0.0000000051650,168.700,23.170
-multicellular,Heliconius melpomene,0.0000000029000,273.790,39.100
-multicellular,Homo sapiens,0.0000000135126,3300.000,36.450
-multicellular,Mus musculus,0.0000000054000,2717.000,35.470
-multicellular,Oryza sativa,0.0000000071000,389.000,101.331
-multicellular,Pan troglodytes,0.0000000120000,3524.000,37.190
-multicellular,Pristionchus pacificus,0.0000000020000,169.700,29.660
-unicellular,Chlamydomonas reinhardtii,0.0000000003798,111.101,39.157
-unicellular,Neurospora crassa,0.0000000041003,38.640,14.510
-unicellular,Paramecium tetraurelia,0.0000000000194,72.095,56.802
-unicellular,Plasmodium falciparum,0.0000000020840,22.850,12.060
-unicellular,Saccharomyces cerevisiae,0.0000000002634,12.463,8.709
-unicellular,Schizosaccharomyces pombe,0.0000000002172,19.630,7.178
-unicellular,Trypanosoma brucei,0.0000000013770,26.075,13.152
-eubacteria,Agrobacterium tumefaciens,0.0000000002920,5.674,4.999
-eubacteria,Bacillus subtilis,0.0000000003350,4.286,3.572
-eubacteria,Burkholderia cenocepacia,0.0000000001330,7.703,6.741
-eubacteria,Deinococcus radiodurans,0.0000000004990,3.284,2.947
-eubacteria,Escherichia coli,0.0000000002000,4.640,3.900
-eubacteria,Helicobacter pylori,0.0000000018980,1.655,1.520
-eubacteria,Mesoplasma florum,0.0000000097800,0.790,0.734
-eubacteria,Mycobacterium smegmatis,0.0000000005270,6.990,6.510
-eubacteria,Mycobacterium tuberculosis,0.0000000001950,4.405,4.030
-eubacteria,Pseudomonas aeruginosa,0.0000000000792,6.529,5.902
-eubacteria,Salmonella enterica,0.0000000001735,4.862,4.030
-eubacteria,Salmonella typhimurium,0.0000000001520,4.860,4.320
-eubacteria,Staphylococcus epidermidis,0.0000000007400,2.565,2.100
-eubacteria,Thermus thermophilus,0.0000000001379,2.130,2.070
-eubacteria,Vibrio cholerae,0.0000000001150,3.945,3.436
-eubacteria,Vibrio fischeri,0.0000000002080,4.274,3.720
+group	species	mu	G	G_coding	included
+multicellular	Apis mellifera	6.8E-09	262	28.968	T
+multicellular	Arabidopsis thaliana	6.95E-09	119.7	42.07	T
+multicellular	Caenorhabditis briggsae	1.3277E-09	104	24.1	T
+multicellular	Caenorhabditis elegans	1.45E-09	100.3	25	T
+multicellular	Daphnia pulex	5.69E-09	250	30.167	T
+multicellular	Drosophila melanogaster	5.165E-09	168.7	23.17	T
+multicellular	Heliconius melpomene	2.9E-09	273.79	39.1	T
+multicellular	Homo sapiens	1.35126E-08	3300	36.45	T
+multicellular	Mus musculus	5.4E-09	2717	35.47	T
+multicellular	Oryza sativa	7.1E-09	389	101.331	T
+multicellular	Pan troglodytes	0.000000012	3524	37.19	T
+multicellular	Pristionchus pacificus	0.000000002	169.7	29.66	T
+unicellular	Chlamydomonas reinhardtii	3.798E-10	111.101	39.157	T
+unicellular	Neurospora crassa	4.1003E-09	38.64	14.51	T
+unicellular	Paramecium tetraurelia	1.94E-11	72.095	56.802	T
+unicellular	Plasmodium falciparum	2.084E-09	22.85	12.06	T
+unicellular	Saccharomyces cerevisiae	2.634E-10	12.463	8.709	T
+unicellular	Schizosaccharomyces pombe	2.172E-10	19.63	7.178	T
+unicellular	Trypanosoma brucei	1.377E-09	26.075	13.152	T
+eubacteria	Agrobacterium tumefaciens	2.92E-10	5.674	4.999	T
+eubacteria	Bacillus subtilis	3.35E-10	4.286	3.572	T
+eubacteria	Burkholderia cenocepacia	1.33E-10	7.703	6.741	T
+eubacteria	Deinococcus radiodurans	4.99E-10	3.284	2.947	T
+eubacteria	Escherichia coli	2E-10	4.64	3.9	T
+eubacteria	Helicobacter pylori	1.898E-09	1.655	1.52	T
+eubacteria	Mesoplasma florum	9.78E-09	0.79	0.734	T
+eubacteria	Mycobacterium smegmatis	5.27E-10	6.99	6.51	T
+eubacteria	Mycobacterium tuberculosis	1.95E-10	4.405	4.03	T
+eubacteria	Pseudomonas aeruginosa	7.92E-11	6.529	5.902	T
+eubacteria	Salmonella enterica	1.735E-10	4.862	4.03	T
+eubacteria	Salmonella typhimurium	1.52E-10	4.86	4.32	T
+eubacteria	Staphylococcus epidermidis	7.4E-10	2.565	2.1	T
+eubacteria	Thermus thermophilus	1.379E-10	2.13	2.07	T
+eubacteria	Vibrio cholerae	1.15E-10	3.945	3.436	T
+eubacteria	Vibrio fischeri	2.08E-10	4.274	3.72	T
