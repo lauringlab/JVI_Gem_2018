@@ -1,36 +1,36 @@
-group	species	mu	G	G_coding	included
-multicellular	Apis mellifera	6.8E-09	262	28.968	T
-multicellular	Arabidopsis thaliana	6.95E-09	119.7	42.07	T
-multicellular	Caenorhabditis briggsae	1.3277E-09	104	24.1	T
-multicellular	Caenorhabditis elegans	1.45E-09	100.3	25	T
-multicellular	Daphnia pulex	5.69E-09	250	30.167	T
-multicellular	Drosophila melanogaster	5.165E-09	168.7	23.17	T
-multicellular	Heliconius melpomene	2.9E-09	273.79	39.1	T
-multicellular	Homo sapiens	1.35126E-08	3300	36.45	T
-multicellular	Mus musculus	5.4E-09	2717	35.47	T
-multicellular	Oryza sativa	7.1E-09	389	101.331	T
-multicellular	Pan troglodytes	0.000000012	3524	37.19	T
-multicellular	Pristionchus pacificus	0.000000002	169.7	29.66	T
-unicellular	Chlamydomonas reinhardtii	3.798E-10	111.101	39.157	T
-unicellular	Neurospora crassa	4.1003E-09	38.64	14.51	T
-unicellular	Paramecium tetraurelia	1.94E-11	72.095	56.802	T
-unicellular	Plasmodium falciparum	2.084E-09	22.85	12.06	T
-unicellular	Saccharomyces cerevisiae	2.634E-10	12.463	8.709	T
-unicellular	Schizosaccharomyces pombe	2.172E-10	19.63	7.178	T
-unicellular	Trypanosoma brucei	1.377E-09	26.075	13.152	T
-eubacteria	Agrobacterium tumefaciens	2.92E-10	5.674	4.999	T
-eubacteria	Bacillus subtilis	3.35E-10	4.286	3.572	T
-eubacteria	Burkholderia cenocepacia	1.33E-10	7.703	6.741	T
-eubacteria	Deinococcus radiodurans	4.99E-10	3.284	2.947	T
-eubacteria	Escherichia coli	2E-10	4.64	3.9	T
-eubacteria	Helicobacter pylori	1.898E-09	1.655	1.52	T
-eubacteria	Mesoplasma florum	9.78E-09	0.79	0.734	T
-eubacteria	Mycobacterium smegmatis	5.27E-10	6.99	6.51	T
-eubacteria	Mycobacterium tuberculosis	1.95E-10	4.405	4.03	T
-eubacteria	Pseudomonas aeruginosa	7.92E-11	6.529	5.902	T
-eubacteria	Salmonella enterica	1.735E-10	4.862	4.03	T
-eubacteria	Salmonella typhimurium	1.52E-10	4.86	4.32	T
-eubacteria	Staphylococcus epidermidis	7.4E-10	2.565	2.1	T
-eubacteria	Thermus thermophilus	1.379E-10	2.13	2.07	T
-eubacteria	Vibrio cholerae	1.15E-10	3.945	3.436	T
-eubacteria	Vibrio fischeri	2.08E-10	4.274	3.72	T
+group,species,mu,G,G_coding,included
+multicellular,Apis mellifera,6.8E-09,262,28.968,T
+multicellular,Arabidopsis thaliana,6.95E-09,119.7,42.07,T
+multicellular,Caenorhabditis briggsae,1.3277E-09,104,24.1,T
+multicellular,Caenorhabditis elegans,1.45E-09,100.3,25,T
+multicellular,Daphnia pulex,5.69E-09,250,30.167,T
+multicellular,Drosophila melanogaster,5.165E-09,168.7,23.17,T
+multicellular,Heliconius melpomene,2.9E-09,273.79,39.1,T
+multicellular,Homo sapiens,1.35126E-08,3300,36.45,T
+multicellular,Mus musculus,5.4E-09,2717,35.47,T
+multicellular,Oryza sativa,7.1E-09,389,101.331,T
+multicellular,Pan troglodytes,0.000000012,3524,37.19,T
+multicellular,Pristionchus pacificus,0.000000002,169.7,29.66,T
+unicellular,Chlamydomonas reinhardtii,3.798E-10,111.101,39.157,T
+unicellular,Neurospora crassa,4.1003E-09,38.64,14.51,T
+unicellular,Paramecium tetraurelia,1.94E-11,72.095,56.802,T
+unicellular,Plasmodium falciparum,2.084E-09,22.85,12.06,T
+unicellular,Saccharomyces cerevisiae,2.634E-10,12.463,8.709,T
+unicellular,Schizosaccharomyces pombe,2.172E-10,19.63,7.178,T
+unicellular,Trypanosoma brucei,1.377E-09,26.075,13.152,T
+eubacteria,Agrobacterium tumefaciens,2.92E-10,5.674,4.999,T
+eubacteria,Bacillus subtilis,3.35E-10,4.286,3.572,T
+eubacteria,Burkholderia cenocepacia,1.33E-10,7.703,6.741,T
+eubacteria,Deinococcus radiodurans,4.99E-10,3.284,2.947,T
+eubacteria,Escherichia coli,2E-10,4.64,3.9,T
+eubacteria,Helicobacter pylori,1.898E-09,1.655,1.52,T
+eubacteria,Mesoplasma florum,9.78E-09,0.79,0.734,T
+eubacteria,Mycobacterium smegmatis,5.27E-10,6.99,6.51,T
+eubacteria,Mycobacterium tuberculosis,1.95E-10,4.405,4.03,T
+eubacteria,Pseudomonas aeruginosa,7.92E-11,6.529,5.902,T
+eubacteria,Salmonella enterica,1.735E-10,4.862,4.03,T
+eubacteria,Salmonella typhimurium,1.52E-10,4.86,4.32,T
+eubacteria,Staphylococcus epidermidis,7.4E-10,2.565,2.1,T
+eubacteria,Thermus thermophilus,1.379E-10,2.13,2.07,T
+eubacteria,Vibrio cholerae,1.15E-10,3.945,3.436,T
+eubacteria,Vibrio fischeri,2.08E-10,4.274,3.72,T
