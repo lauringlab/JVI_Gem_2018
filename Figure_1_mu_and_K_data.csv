@@ -53,7 +53,6 @@ ss_pos_RNA,corona,SARS_coronavirus,29.7,2.80E-03,,"8, 9 (2012)","Hon et al. 2008
 ss_pos_RNA,dicistro,taura_syndrome_virus,10.2,2.37E-03,,10 (2012),Wertheim et al. 2009,,,T
 ss_pos_RNA,flavi,hepatitis_C_virus,9.65,1.32E-03,3.80E-05,"16,17 (2012)","Magiorkinis et al. 2009, Gray et al. 2011","137,138,105 (2016)","Cuevas et al. 2009, Ribeiro et al. 2012, Geller et al. 2016",T
 ss_pos_RNA,flavi,dengue_virus,10.7,7.87E-04,,"11,12,13,14 (2012)","Patil et al. 2011, Klungthong et al. 2004, Kumar et al. 2010, Ramirez et al. 2010",,,T
-ss_pos_RNA,flavi,dengue_virus,10.7,1.03E-03,,,Bai et al. 2018,,,F
 ss_pos_RNA,flavi,GB-C_virus,9.4,1.16E-02,,15 (2012),Romano et al. 2008,,,T
 ss_pos_RNA,flavi,japanese_encephalitis_virus,10.98,4.27E-04,,18 (2012),Mohammed et al. 2011,,,T
 ss_pos_RNA,flavi,KFDV,10.69,6.40E-04,,19 (2012),Mehla et al. 2009,,,T
@@ -109,3 +108,5 @@ ss_pos_RNA,picorna,coxsackie_B_virus,7.4,4.76E-03,,,Huang et al. 2018,,,F
 ss_pos_RNA,picorna,swine_vesicular_disease_virus,7.4,3.61E-03,,,Huang et al. 2018,,,F
 ss_pos_RNA,flavi,zika_virus,10,6.76E-04,,,"Pettersson et al. 2016, Pettersson et al. 2018",,,F
 dsDNA,pitho,pithovirus,640,2.23E-06,,,Duchene and Holmes 2018,,,F
+ss_pos_RNA,flavi,dengue_virus,10.7,1.03E-03,,,Bai et al. 2018,,,F
+ss_pos_RNA,flavi,dengue_virus,10.7,7.17E-04,,,Koo et al. 2018,,,F
